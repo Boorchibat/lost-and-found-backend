@@ -13,7 +13,7 @@ router.post("/signin", signIn);
 
 router.post("/verify", verifyCode);
 
-router.put("/update", updateUser);
+router.put("/:id", updateUser);
 
 router.delete("/delete", deleteUser)
 

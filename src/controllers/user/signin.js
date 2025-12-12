@@ -20,7 +20,7 @@ const signIn = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Wrong password" });
     }
     if (!user.isVerified) {
       const verificationCode = crypto.randomInt(100000, 1000000).toString();

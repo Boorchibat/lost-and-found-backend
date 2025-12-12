@@ -20,6 +20,12 @@ const itemSchema = new mongoose.Schema(
     isFound: {
       type: String,
       enum: ["Found", "In progress"],
+      required: true,
+    },
+    User: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     mainImage: imageSchema,
     images: [imageSchema],
@@ -36,14 +42,25 @@ const itemSchema = new mongoose.Schema(
       required: true,
     },
     contactEmail: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     name: {
-        type: String,
-        requied: true,
-    }
+      type: String,
+      requied: true,
+    },
+    claims: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Claim",
+      },
+    ],
+    status: {
+      type: String,
+      enum: ["pending", "accepted", "rejected"],
+      default: "pending",
+    },
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("itemSchema", itemSchema)
+module.exports = mongoose.model("Item", itemSchema);

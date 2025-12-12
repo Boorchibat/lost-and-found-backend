@@ -1,24 +1,32 @@
 const express = require("express");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const cors = require("cors");
-require('dotenv').config();
-const auth = require("./src/routes/auth")
+require("dotenv").config();
+const auth = require("./src/routes/auth");
+const item = require("./src/routes/itemRoute");
+const claim = require("./src/routes/claimRoute");
+const authenication = require("./src/routes/authetication");
 
 const app = express();
 const port = 9000;
 
-app.use(cors({
-origin: ["http://localhost:9000"],
-credentials: true,
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:9000"],
+    credentials: true,
+  })
+);
 
-app.use(express.json())
+app.use(express.json());
 
 app.get("/", async (request, response) => {
   response.send("Intro to MongoDb and MonGoose");
 });
 
-app.use("/auth", auth)
+app.use("/auth", auth);
+app.use("/item", item);
+app.use("/claim", claim);
+app.use("/authentication", authenication);
 
 mongoose
   .connect(process.env.MONGODB_URL)

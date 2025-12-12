@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../../utils/createToken");
+const user = require("../../schema/user");
 
 const updateUser = async (req, res) => {
   const { id } = req.params;
@@ -42,9 +43,10 @@ const updateUser = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       id,
       {
-        email,
-        username,
-        password: hashedPassword,
+        email: email || User.email,
+        username: username || User.username,
+        password: hashedPassword || User.username,
+        isAdmin: user.isAdmin
       },
       { new: true }
     );
