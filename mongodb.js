@@ -12,7 +12,10 @@ const port = 9000;
 
 app.use(
   cors({
-    origin: ["http://localhost:9000"],
+    origin: [
+      "http://localhost:9000",
+      "https://lost-and-found-backend-1-zssw.onrender.com",
+    ],
     credentials: true,
   })
 );
@@ -20,7 +23,7 @@ app.use(
 app.use(express.json());
 
 app.get("/", async (request, response) => {
-  response.send("Intro to MongoDb and MonGoose");
+  response.send("This is the lost and found backend server");
 });
 
 app.use("/auth", auth);
