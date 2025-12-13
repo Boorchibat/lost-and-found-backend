@@ -33,7 +33,11 @@ const signUp = async (req, res) => {
       username,
       password: hashpassword,
       email,
-      isAdmin: "user"
+      isAdmin: "user",
+      profileImage: {
+        url: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_placeholder.png",
+        public_id: "defaults/profile/guest",
+      },
     });
     const token = createToken(newUser._id);
     return res.status(201).json({

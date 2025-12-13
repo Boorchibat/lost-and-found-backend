@@ -5,6 +5,11 @@ const bcrypt = require("bcrypt");
 const { createToken } = require("../../utils/createToken");
 const user = require("../../schema/user");
 
+const DEFAULT_PROFILE_IMAGE = {
+  url: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_placeholder.png",
+  public_id: "defaults/profile/guest",
+};
+
 const updateUser = async (req, res) => {
   const { id } = req.params;
 
@@ -12,7 +17,7 @@ const updateUser = async (req, res) => {
     return res.status(400).json({ message: "ID is not valid" });
   }
 
-  const { username, password, email } = req.body;
+  const { username, password, email, profileImage  } = req.body;
 
   if (!username || !password || !email) {
     return res
@@ -46,7 +51,11 @@ const updateUser = async (req, res) => {
         email: email || User.email,
         username: username || User.username,
         password: hashedPassword || User.username,
-        isAdmin: user.isAdmin
+        isAdmin: user.isAdmin,
+        profileImage:
+          profileImage?.url && profileImage?.public_id
+            ? profileImage
+            : DEFAULT_PROFILE_IMAGE,
       },
       { new: true }
     );
