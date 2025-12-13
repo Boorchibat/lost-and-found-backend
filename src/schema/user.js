@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const imageSchema = new mongoose.Schema({
+  url: {
+    type: String,
+    required: true,
+  },
+  public_id: {
+    type: String,
+    required: true,
+  },
+});
+
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -34,6 +45,7 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+     profileImage: imageSchema,
   },
   {
     timestamps: true,
