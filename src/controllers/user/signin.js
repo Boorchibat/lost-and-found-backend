@@ -1,15 +1,15 @@
 const User = require("../../schema/user");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../../utils/createToken");
-const mg = require("../../utils/mailgun");
+const transporter = require("../../utils/nodemailer");
 const crypto = require("crypto");
-
-const DOMAIN = process.env.MAILGUN_DOMAIN;
 
 const signIn = async (req, res) => {
   const { password, email } = req.body;
   if (!password || !email) {
-    return res.status(400).json({ message: "Please fill out password and email" });
+    return res
+      .status(400)
+      .json({ message: "Please fill out password and email" });
   }
 
   try {
@@ -25,27 +25,38 @@ const signIn = async (req, res) => {
     if (!user.isVerified) {
       const verificationCode = crypto.randomInt(100000, 1000000).toString();
       user.verificationCode = verificationCode;
-      user.verificationCodeExpires = Date.now() + 10 * 60 * 1000; 
+      user.verificationCodeExpires = Date.now() + 10 * 60 * 1000;
       await user.save();
 
       try {
-        await mg.messages.create(DOMAIN, {
-          from: `Lost and found login <postmaster@${DOMAIN}>`,
-          to: [user.email],
+        await transporter.sendMail({
+          from: `"Lost & Found" <${process.env.NODEMAILER_EMAIL}>`,
+          to: user.email,
           subject: "Verify Your Email",
           html: `
-            <h2>Verify your email</h2>
-            <p>Your verification code is:</p>
-            <h1>${verificationCode}</h1>
-            <p>This code expires in 10 minutes.</p>
-          `,
+  <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5;">
+    <h2 style="color: #2c3e50;">Verify Your Email</h2>
+    <p>Hi ${user.username || "there"},</p>
+    <p>Thank you for signing in to <strong>Lost & Found</strong>. Please use the verification code below to complete your login:</p>
+    <div style="background-color: #f1f1f1; padding: 15px; display: inline-block; border-radius: 5px; font-size: 24px; letter-spacing: 2px; margin: 10px 0;">
+      <strong>${verificationCode}</strong>
+    </div>
+    <p>This code will expire in 10 minutes.</p>
+    <p style="font-size: 12px; color: #888;">If you did not request this email, please ignore it.</p>
+    <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+    <p style="font-size: 12px; color: #aaa;">&copy; 2025 Lost & Found</p>
+  </div>
+`,
         });
       } catch (error) {
-        console.error("Mailgun error:", error);
-        return res.status(500).json({ message: "Failed to send verification email" });
+        console.error("Resend error:", error);
+        return res
+          .status(500)
+          .json({ message: "Failed to send verification email" });
       }
       return res.status(200).json({
-        message: "Verification code sent. Please verify before signing in.",
+        message: "Verification code sent Please verify before signing in.",
+        email: user.email,
       });
     }
     const token = createToken(user._id);
