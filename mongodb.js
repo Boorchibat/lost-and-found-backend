@@ -8,13 +8,14 @@ const claim = require("./src/routes/claimRoute");
 const authenication = require("./src/routes/authetication");
 
 const app = express();
-const port = 9000;
+const port = process.env.PORT || 9000;
 
 app.use(
   cors({
     origin: [
       "http://localhost:9000",
       "https://lost-and-found-backend-1-zssw.onrender.com",
+      "http://localhost:3000/"
     ],
     credentials: true,
   })
