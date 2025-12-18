@@ -66,6 +66,7 @@ const signIn = async (req, res) => {
       user: {
         username: user.username,
         email: user.email,
+        isVerified: user.isVerified,
       },
       token,
     });

@@ -48,6 +48,7 @@ const signUp = async (req, res) => {
         username: newUser.username,
         number: newUser.number,
         name: newUser.name,
+        isVerified: user.isVerified,
       },
       token,
     });
