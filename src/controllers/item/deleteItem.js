@@ -10,7 +10,7 @@ const mongoose = require("mongoose");
 
   try {
     const item = await Item.findById(id);
-    if (!item || item.status === "rejected") {
+    if (!item) {
       return res.status(404).json({ error: "Item not Found" });
     }
     const deleteItem = await Item.findByIdAndDelete(id);

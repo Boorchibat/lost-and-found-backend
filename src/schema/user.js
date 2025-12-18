@@ -44,7 +44,15 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
-     profileImage: imageSchema,
+    number: {
+      type: String,
+      unique: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    profileImage: imageSchema,
   },
   {
     timestamps: true,

@@ -4,8 +4,8 @@ const bcrypt = require("bcrypt");
 const { createToken } = require("../../utils/createToken");
 
 const signUp = async (req, res) => {
-  const { username, password, email } = req.body;
-  if (!username || !password || !email) {
+  const { username, password, email, name, number } = req.body;
+  if (!username || !password || !email || !name || !number) {
     return res
       .status(400)
       .json({ message: "Please enter your username, password and email" });
@@ -33,6 +33,8 @@ const signUp = async (req, res) => {
       username,
       password: hashpassword,
       email,
+      name,
+      number,
       isAdmin: "user",
       profileImage: {
         url: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_placeholder.png",
@@ -44,6 +46,8 @@ const signUp = async (req, res) => {
       user: {
         email: newUser.email,
         username: newUser.username,
+        number: newUser.number,
+        name: newUser.name,
       },
       token,
     });

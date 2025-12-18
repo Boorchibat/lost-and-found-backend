@@ -21,6 +21,7 @@ const itemSchema = new mongoose.Schema(
       type: String,
       enum: ["Found", "In progress"],
       required: true,
+      default: "In progress",
     },
     User: {
       type: mongoose.Schema.Types.ObjectId,
