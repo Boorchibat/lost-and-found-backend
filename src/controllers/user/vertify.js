@@ -1,33 +1,36 @@
+// controllers/user/verifyCode.js
 const User = require("../../schema/user");
+const { createToken } = require("../../utils/createToken");
 
 const verifyCode = async (req, res) => {
   const { email, code } = req.body;
 
-  if (!email || !code) {
-    return res.status(400).json({ message: "Email and code are required" });
-  }
-
   const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(400).json({ message: "User not found" });
-  }
-  if (!user.verificationCodeExpires || Date.now() > user.verificationCodeExpires) {
-    user.verificationCode = null;
-    user.verificationCodeExpires = null;
-    await user.save();
-    return res.status(400).json({ message: "Verification code has expired" });
-  }
+  if (!user) return res.status(400).json({ message: "User not found" });
 
-  if (user.verificationCode !== code) {
-    return res.status(400).json({ message: "Invalid verification code" });
+  if (
+    !user.verificationCode ||
+    user.verificationCode !== code ||
+    Date.now() > user.verificationCodeExpires
+  ) {
+    return res.status(400).json({ message: "Invalid or expired code" });
   }
 
   user.isVerified = true;
   user.verificationCode = null;
   user.verificationCodeExpires = null;
   await user.save();
+  const token = createToken(user._id);
 
-  return res.status(200).json({ message: "Email verified successfully" });
+  return res.status(200).json({
+    message: "Email verified successfully",
+    token: createToken(user._id),
+    user: {
+      email: user.email,
+      username: user.username,
+      isVerified: true,
+    },
+  });
 };
 
 module.exports = { verifyCode };
