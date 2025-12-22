@@ -10,5 +10,13 @@ const transporter = nodemailer.createTransport({
     rejectUnauthorized: false, 
   },
 });
+transporter.verify((error, success) => {
+  if (error) {
+    console.error("SMTP VERIFY FAILED:", error);
+  } else {
+    console.log("SMTP READY TO SEND EMAILS");
+  }
+});
+
 
 module.exports = transporter;
