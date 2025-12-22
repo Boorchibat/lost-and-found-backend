@@ -59,7 +59,6 @@ const signIn = async (req, res) => {
 
       return res.status(200).json({
         message: "Verification code sent! Please verify before signing in.",
-        email: user.email,
       });
     }
 
