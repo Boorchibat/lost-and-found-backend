@@ -29,16 +29,6 @@ const userSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
     },
-    verificationCode: {
-      type: String,
-    },
-    verificationCodeExpires: {
-      type: Date,
-    },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
     role: {
       type: String,
       enum: ["user", "admin"],
