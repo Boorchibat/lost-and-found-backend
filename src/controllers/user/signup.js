@@ -2,16 +2,16 @@ const validator = require("validator");
 const User = require("../../schema/user");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../../utils/createToken");
-const crypto = require("crypto"); 
+const crypto = require("crypto");
 
 const signUp = async (req, res) => {
   const { username, password, email, name, number } = req.body;
 
-
   if (!username || !password || !email || !name || !number) {
-    return res.status(400).json({ message: "Please fill out all required fields" });
+    return res
+      .status(400)
+      .json({ message: "Please fill out all required fields" });
   }
-
 
   if (!validator.isEmail(email)) {
     return res.status(400).json({ message: "Please enter a valid email" });
@@ -27,7 +27,9 @@ const signUp = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "This email is already being used" });
+      return res
+        .status(400)
+        .json({ message: "This email is already being used" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -55,6 +57,7 @@ const signUp = async (req, res) => {
         number: newUser.number,
         name: newUser.name,
         isVerified: newUser.isVerified,
+        _id: newUser._id,
       },
       token,
     });
