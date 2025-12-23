@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.use(authentication);
 
-router.get("/:id", getItemsByUser);
+router.get("/user/:userId", getItemsByUser);
 router.get("/", getItems);
 router.post("/", createItem);
 router.put("/:id", updateItem);
