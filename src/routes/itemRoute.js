@@ -1,9 +1,9 @@
 const {
-  getItem,
   getItems,
   createItem,
   deleteItem,
   updateItem,
+  getItemsByUser,
 } = require("../controllers/item");
 
 const { approveItem, rejectItem } = require("../controllers/item/adminItem");
@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.use(authentication);
 
-router.get("/:id", getItem);
+router.get("/:id", getItemsByUser);
 router.get("/", getItems);
 router.post("/", createItem);
 router.put("/:id", updateItem);
