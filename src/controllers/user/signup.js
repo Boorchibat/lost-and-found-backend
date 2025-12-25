@@ -42,7 +42,7 @@ const signUp = async (req, res) => {
       name,
       number,
       profileImage: {
-        url: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_placeholder.png",
+        url: "./user.svg",
         public_id: "defaults/profile/guest",
       },
     });
