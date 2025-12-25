@@ -17,9 +17,9 @@ const updateUser = async (req, res) => {
     return res.status(400).json({ message: "ID is not valid" });
   }
 
-  const { username, password, email, profileImage, name, number  } = req.body;
-  if(!username || !password || !email || !profileImage || !name || !number){
-    return res.status(400).json({message: "Please enter all fields"})
+  const { username, password, profileImage, name, number, email } = req.body;
+  if (!username || !password || !profileImage || !name || !number) {
+    return res.status(400).json({ message: "Please enter all fields" });
   }
 
   if (!validator.isEmail(email)) {
@@ -45,7 +45,6 @@ const updateUser = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       id,
       {
-        email: email || User.email,
         username: username || User.username,
         password: hashedPassword || User.username,
         isAdmin: user.isAdmin,
@@ -55,6 +54,7 @@ const updateUser = async (req, res) => {
           profileImage?.url && profileImage?.public_id
             ? profileImage
             : DEFAULT_PROFILE_IMAGE,
+        role: role || User.role,
       },
       { new: true }
     );
@@ -62,10 +62,9 @@ const updateUser = async (req, res) => {
 
     return res.status(200).json({
       user: {
-        email: updatedUser.email,
         username: updatedUser.username,
         number: updatedUser.number,
-        name: updatedUser.name
+        name: updatedUser.name,
       },
       token,
     });
