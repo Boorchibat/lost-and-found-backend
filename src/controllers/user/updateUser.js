@@ -6,7 +6,7 @@ const { createToken } = require("../../utils/createToken");
 const user = require("../../schema/user");
 
 const DEFAULT_PROFILE_IMAGE = {
-  url: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_placeholder.png",
+  url: "./user.svg",
   public_id: "defaults/profile/guest",
 };
 
