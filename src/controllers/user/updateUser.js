@@ -17,8 +17,8 @@ const updateUser = async (req, res) => {
     return res.status(400).json({ message: "ID is not valid" });
   }
 
-  const { username, password, profileImage, name, number, email } = req.body;
-  if (!username || !password || !profileImage || !name || !number) {
+  const { username, password, profileImage, name, number, email, role } = req.body;
+  if (!username || !password || !email || !profileImage || !name || !number || !role) {
     return res.status(400).json({ message: "Please enter all fields" });
   }
 
@@ -47,6 +47,7 @@ const updateUser = async (req, res) => {
       {
         username: username || User.username,
         password: hashedPassword || User.username,
+        email: email || User.email,
         isAdmin: user.isAdmin,
         name: name || User.name,
         number: number || User.number,
