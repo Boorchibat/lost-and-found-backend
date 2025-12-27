@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../../utils/createToken");
-const user = require("../../schema/user");
 
 const DEFAULT_PROFILE_IMAGE = {
   url: "./user.svg",
@@ -14,58 +13,64 @@ const updateUser = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "ID is not valid" });
+    return res.status(400).json({ message: "Invalid user ID" });
   }
 
-  const { username, password, profileImage, name, number, email, role } = req.body;
-  if (!username || !password || !email || !profileImage || !name || !number || !role) {
-    return res.status(400).json({ message: "Please enter all fields" });
+  const { username, password, profileImage, name, number, email, role } =
+    req.body;
+
+  if (!username || !email || !name || !number || !role) {
+    return res.status(400).json({ message: "Missing required fields" });
   }
 
   if (!validator.isEmail(email)) {
-    return res.status(400).json({ message: "Please enter a valid email" });
-  }
-
-  if (!validator.isStrongPassword(password)) {
-    return res.status(400).json({
-      message:
-        "Password must be at least 8 characters and contain at least 1 uppercase letter, 1 lowercase letter, 1 number and at least 1 special character",
-    });
+    return res.status(400).json({ message: "Invalid email address" });
   }
 
   try {
-    const existingUser = await User.findOne({ email });
-    if (!existingUser) {
-      return res.status(400).json({ message: "No user found with this email" });
+    const updateData = {
+      username,
+      email,
+      name,
+      number,
+      role,
+      profileImage:
+        profileImage?.url && profileImage?.public_id
+          ? profileImage
+          : DEFAULT_PROFILE_IMAGE,
+    };
+
+    if (password) {
+      if (!validator.isStrongPassword(password)) {
+        return res.status(400).json({
+          message:
+            "Password must be at least 8 characters and include uppercase, lowercase, number, and special character",
+        });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      updateData.password = await bcrypt.hash(password, salt);
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
 
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
-      {
-        username: username || User.username,
-        password: hashedPassword || User.username,
-        email: email || User.email,
-        isAdmin: user.isAdmin,
-        name: name || User.name,
-        number: number || User.number,
-        profileImage:
-          profileImage?.url && profileImage?.public_id
-            ? profileImage
-            : DEFAULT_PROFILE_IMAGE,
-        role: role || User.role,
-      },
-      { new: true }
-    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     const token = createToken(updatedUser._id);
 
     return res.status(200).json({
       user: {
+        _id: updatedUser._id,
         username: updatedUser.username,
-        number: updatedUser.number,
+        email: updatedUser.email,
         name: updatedUser.name,
+        number: updatedUser.number,
+        role: updatedUser.role,
+        profileImage: updatedUser.profileImage,
       },
       token,
     });
