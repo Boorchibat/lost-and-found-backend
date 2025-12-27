@@ -15,11 +15,10 @@ const { getItem } = require("../controllers/item/getItemById");
 
 const router = express.Router();
 
-router.use(authentication);
-
 router.get("/user/:userId", getItemsByUser);
 router.get("/", getItems);
 router.get("/:id", getItem);
+
 router.post("/", authentication, createItem);
 router.put("/:id", authentication, updateItem);
 router.delete("/:id", authentication, deleteItem);
