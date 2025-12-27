@@ -20,11 +20,11 @@ router.use(authentication);
 router.get("/user/:userId", getItemsByUser);
 router.get("/", getItems);
 router.get("/:id", getItem);
-router.post("/", createItem);
-router.put("/:id", updateItem);
-router.delete("/:id", deleteItem);
+router.post("/", authentication, createItem);
+router.put("/:id", authentication, updateItem);
+router.delete("/:id", authentication, deleteItem);
 
-router.put("/admin/approve/:id", isAdmin, approveItem);
-router.put("/admin/reject/:id", isAdmin, rejectItem);
+router.put("/admin/approve/:id", authentication, isAdmin, approveItem);
+router.put("/admin/reject/:id", authentication, isAdmin, rejectItem);
 
 module.exports = router;
