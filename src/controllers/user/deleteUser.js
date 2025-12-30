@@ -1,9 +1,9 @@
-const { Mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 const User = require("../../schema/user");
 
 const deleteUser = async (req, res) => {
   const { id } = req.params;
-  if (!Mongoose.Types.ObjectId.isValid(id)) {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "ID is not valid" });
   }
   try {
