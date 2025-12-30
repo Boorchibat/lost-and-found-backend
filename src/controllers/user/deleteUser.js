@@ -7,7 +7,7 @@ const deleteUser = async (req, res) => {
     return res.status(400).json({ message: "ID is not valid" });
   }
   try {
-    const deleteUser = User.findByIdAndDelete(id);
+    const deleteUser = await User.findByIdAndDelete(id);
     if (!deleteUser) {
       res.status(400).json({ message: "User not found" });
     }
