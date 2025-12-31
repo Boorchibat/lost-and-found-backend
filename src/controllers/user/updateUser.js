@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const { createToken } = require("../../utils/createToken");
 
 const DEFAULT_PROFILE_IMAGE = {
-  url: "./user.svg",
+  url: "/user.svg",
   public_id: "defaults/profile/guest",
 };
 

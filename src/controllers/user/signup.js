@@ -2,7 +2,6 @@ const validator = require("validator");
 const User = require("../../schema/user");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../../utils/createToken");
-const crypto = require("crypto");
 
 const signUp = async (req, res) => {
   const { username, password, email, name, number } = req.body;
@@ -42,7 +41,7 @@ const signUp = async (req, res) => {
       name,
       number,
       profileImage: {
-        url: "./user.svg",
+        url: "/user.svg",
         public_id: "defaults/profile/guest",
       },
     });
