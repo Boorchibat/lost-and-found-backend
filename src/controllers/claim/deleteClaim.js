@@ -16,12 +16,6 @@ const deleteClaim = async (req, res) => {
     const claim = await Claim.findById(claimId);
     if (!claim) return res.status(404).json({ message: "Claim not found." });
 
-    if (claim.User.toString() !== req.user._id.toString()) {
-      return res
-        .status(403)
-        .json({ message: "You can only delete your own claim." });
-    }
-
     const item = await Item.findById(itemId);
     if (!item) return res.status(404).json({ message: "Item not found." });
 
