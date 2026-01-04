@@ -13,22 +13,28 @@ const deleteClaim = async (req, res) => {
       return res.status(400).json({ message: "Invalid item or claim ID." });
     }
 
-    const claim = await Claim.findById(claimId);
-    if (!claim) return res.status(404).json({ message: "Claim not found." });
-
     const item = await Item.findById(itemId);
-    if (!item) return res.status(404).json({ message: "Item not found." });
+    if (!item) {
+      return res.status(404).json({ message: "Item not found." });
+    }
 
-    item.claims = item.claims.filter((id) => id.toString() !== claimId);
+    const claim = await Claim.findById(claimId);
+    if (!claim) {
+      return res.status(404).json({ message: "Claim not found." });
+    }
+
+    item.claims = item.claims.filter(
+      (id) => id.toString() !== claimId
+    );
     await item.save();
-    await claim.remove();
 
-  
-    const deleteClaim = Item.findByIdAndDelete(claimId)
-     return res.json(deleteClaim);
+    await Claim.findByIdAndDelete(claimId);
+
+    return res.json({ message: "Claim deleted successfully" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Server error." });
+    return res.status(500).json({ message: error.message });
   }
 };
+
 module.exports = { deleteClaim };
