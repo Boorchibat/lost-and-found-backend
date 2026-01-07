@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
   }
 
   try {
-    const item = await Item.findById(id);
+    const item = await Item.findById(id).populate("User");
     if (!item) {
       return res.status(404).json({ error: "Item not Found" });
     }
