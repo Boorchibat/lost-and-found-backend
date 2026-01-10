@@ -4,17 +4,18 @@ const { signIn } = require("../controllers/user/signin");
 const { updateUser } = require("../controllers/user/updateUser");
 const { deleteUser } = require("../controllers/user/deleteUser");
 const { getUser } = require("../controllers/user/getUser");
+const { authentication } = require("../middleware");
 
 const router = express.Router();
 
-router.post("/signup", signUp);
+router.post("/signup", authentication, signUp);
 
-router.post("/signin", signIn);
+router.post("/signin", authentication, signIn);
 
-router.put("/:id", updateUser);
+router.put("/:id", authentication, updateUser);
 
-router.get("/:id", getUser )
+router.get("/:id", getUser);
 
-router.delete("/:id", deleteUser)
+router.delete("/:id", authentication, deleteUser);
 
 module.exports = router;
