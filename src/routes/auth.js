@@ -8,9 +8,9 @@ const { authentication } = require("../middleware");
 
 const router = express.Router();
 
-router.post("/signup", authentication, signUp);
+router.post("/signup", signUp);
 
-router.post("/signin", authentication, signIn);
+router.post("/signin",  signIn);
 
 router.put("/:id", authentication, updateUser);
 
