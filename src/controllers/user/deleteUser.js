@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("../../schema/user");
-const Item = require("../../schema/item"); 
+const Item = require("../../schema/item");
+const Claim = require("../../schema/claim");
 
 const deleteUser = async (req, res) => {
   const { id } = req.params;
@@ -10,7 +11,7 @@ const deleteUser = async (req, res) => {
   }
   try {
     await Item.deleteMany({ User: id });
-
+    await Claim.deleteMany({ User: id });
     const deletedUser = await User.findByIdAndDelete(id);
 
     if (!deletedUser) {
