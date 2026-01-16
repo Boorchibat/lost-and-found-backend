@@ -11,6 +11,32 @@ const imageSchema = new mongoose.Schema({
   },
 });
 
+// Color enum
+const COLORS = [
+  "Red",
+  "Blue",
+  "Yellow",
+  "Green",
+  "Black",
+  "White",
+  "Gray",
+  "Orange",
+  "Purple",
+  "Pink",
+  "Brown",
+];
+
+// Updated physical types enum
+const PHYSICAL_TYPES = [
+  "Backpack",
+  "Clothes",
+  "Shoes",
+  "Hat",
+  "AirPods",
+  "Laptop Charger",
+  "Notebook",
+];
+
 const itemSchema = new mongoose.Schema(
   {
     itemname: {
@@ -34,6 +60,18 @@ const itemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    color: [
+      {
+        type: String,
+        enum: COLORS,
+      },
+    ],
+    physical: [
+      {
+        type: String,
+        enum: PHYSICAL_TYPES,
+      },
+    ],
     location: {
       type: String,
       required: true,
@@ -64,4 +102,5 @@ const itemSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
 module.exports = mongoose.model("Item", itemSchema);
