@@ -11,7 +11,6 @@ const imageSchema = new mongoose.Schema({
   },
 });
 
-// Color enum
 const COLORS = [
   "Red",
   "Blue",
@@ -24,9 +23,9 @@ const COLORS = [
   "Purple",
   "Pink",
   "Brown",
+  "other"
 ];
 
-// Updated physical types enum
 const PHYSICAL_TYPES = [
   "Backpack",
   "Clothes",
@@ -35,6 +34,7 @@ const PHYSICAL_TYPES = [
   "AirPods",
   "Laptop Charger",
   "Notebook",
+  "other"
 ];
 
 const itemSchema = new mongoose.Schema(
