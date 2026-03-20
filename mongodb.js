@@ -16,7 +16,8 @@ app.use(
       "http://localhost:9000",
       "https://lost-and-found-backend-1-zssw.onrender.com",
       "http://localhost:3000",
-      "https://lost-and-found-frontend-gzc8.vercel.app"
+      "https://lost-and-found-frontend-gzc8.vercel.app",
+      "https://www.foundrfbla.store/"
     ],
     credentials: true,
   })
