@@ -99,6 +99,10 @@ const itemSchema = new mongoose.Schema(
       enum: ["pending", "approved", "rejected"],
       default: "pending",
     },
+    embedding: {
+      type: [Number],
+      default: [],
+    }
   },
   { timestamps: true }
 );

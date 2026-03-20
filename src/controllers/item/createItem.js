@@ -1,4 +1,5 @@
 const Item = require("../../schema/item");
+const {getEmbedding} = require("../../services/openai")
 
 const COLORS = [
   "Red",
@@ -62,7 +63,11 @@ const createItem = async (req, res) => {
     ? physical.filter((p) => PHYSICAL_TYPES.includes(p))
     : [];
 
+
+
   try {
+   const textToEmbed = `${itemname}. ${description}. Color: ${validColors.join(", ")}. Physical: ${validPhysical.join(", ")}`;
+    const textEmbedding = await getEmbedding(textToEmbed);
     const item = await Item.create({
       itemname,
       isFound,
@@ -76,6 +81,7 @@ const createItem = async (req, res) => {
       name,
       color: validColors,
       physical: validPhysical,
+      embedding: textEmbedding,
     });
 
     return res.status(201).json(item);

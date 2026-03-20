@@ -4,4 +4,5 @@ module.exports = {
     ...require("./createItem"),
     ...require("./deleteItem"),
     ...require("./updateItem"),
+    ...require("./searchItem"),
 }

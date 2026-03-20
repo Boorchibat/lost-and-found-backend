@@ -4,6 +4,7 @@ const {
   deleteItem,
   updateItem,
   getItemsByUser,
+  searchItems,
 } = require("../controllers/item");
 
 const { approveItem, rejectItem } = require("../controllers/item/adminItem");
@@ -18,6 +19,7 @@ const router = express.Router();
 router.get("/user/:userId", getItemsByUser);
 router.get("/", getItems);
 router.get("/:id", getItem);
+router.post("/search", searchItems); 
 
 router.post("/", authentication, createItem);
 router.put("/:id", authentication, updateItem);

@@ -1,5 +1,6 @@
 const Item = require("../../schema/item");
 const mongoose = require("mongoose");
+const { getEmbedding } = require("../../services/openai");
 
 const COLORS = [
   "Red",
@@ -58,6 +59,18 @@ const updateItem = async (req, res) => {
       ? physical.filter((p) => PHYSICAL_TYPES.includes(p))
       : item.physical;
 
+    const shouldUpdateEmbedding = itemname || description || color || physical;
+
+    let embedding = item.embedding;
+
+    if (shouldUpdateEmbedding) {
+      const textToEmbed = `${itemname || item.itemname}. ${
+        description || item.description
+      }. Color: ${validColors.join(", ")}. Physical: ${validPhysical.join(", ")}`;
+
+      embedding = await getEmbedding(textToEmbed);
+    }
+
     const updatedItem = await Item.findByIdAndUpdate(
       id,
       {
@@ -72,8 +85,9 @@ const updateItem = async (req, res) => {
         name: name || item.name,
         color: validColors,
         physical: validPhysical,
+        embedding,
       },
-      { new: true }
+      { new: true },
     );
 
     res.status(200).json(updatedItem);
