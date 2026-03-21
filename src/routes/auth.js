@@ -4,6 +4,8 @@ const { signIn } = require("../controllers/user/signin");
 const { updateUser } = require("../controllers/user/updateUser");
 const { deleteUser } = require("../controllers/user/deleteUser");
 const { getUser } = require("../controllers/user/getUser");
+const { passwordlessLogin } = require("../controllers/user/passwordless");
+const { verifyCodeAndLogin } = require("../controllers/user/verify");
 const { authentication } = require("../middleware");
 
 const router = express.Router();
@@ -17,5 +19,11 @@ router.put("/:id", authentication, updateUser);
 router.get("/:id", getUser);
 
 router.delete("/:id", authentication, deleteUser);
+
+router.post("/passwordless", passwordlessLogin);
+
+router.post("/verify-email", verifyCodeAndLogin);
+
+
 
 module.exports = router;
