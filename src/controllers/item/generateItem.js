@@ -19,7 +19,7 @@ async function generateItem(req, res) {
       messages: [
         {
           role: "system",
-          content: "You generate short, catchy item descriptions.",
+          content: "You generate short descriptions for lost and found items based on their name and image.",
         },
         { role: "user", content: prompt },
       ],
