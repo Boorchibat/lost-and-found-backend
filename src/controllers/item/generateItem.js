@@ -9,9 +9,9 @@ async function generateItem(req, res) {
     const { itemname, image } = req.body; 
     if (!itemname) return res.status(400).json({ error: "Item name is required" });
 
-    const prompt = `Create a short description of this item to give information about a lost item to others: ${itemname}. ${
-      image ? `Here is the image URL for reference: ${image}` : ""
-    } Keep it under 60 words.`;
+    const prompt = `Write a short, clear, and modern description of this lost item for high school students and teachers. Include what it is, any noticeable features, and any other info that can help someone identify it: ${itemname}. ${
+  image ? `Here’s the image URL for reference: ${image}` : ""
+} Keep it under 60 words, and make it sound natural and easy to read.`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
