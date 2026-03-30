@@ -9,7 +9,7 @@ async function generateItem(req, res) {
     const { itemname, image } = req.body; 
     if (!itemname) return res.status(400).json({ error: "Item name is required" });
 
-    const prompt = `Create a short description of this item for a person who lost it and wants to give others information about it: ${itemname}. ${
+    const prompt = `Create a short description of this item to give information about a lost item to others: ${itemname}. ${
       image ? `Here is the image URL for reference: ${image}` : ""
     } Keep it under 60 words.`;
 
