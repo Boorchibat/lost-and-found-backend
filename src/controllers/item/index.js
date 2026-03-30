@@ -5,4 +5,5 @@ module.exports = {
     ...require("./deleteItem"),
     ...require("./updateItem"),
     ...require("./searchItem"),
+    ...require("./generateItem"),
 }

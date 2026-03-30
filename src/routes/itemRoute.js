@@ -5,6 +5,7 @@ const {
   updateItem,
   getItemsByUser,
   searchItems,
+  generateItem,
 } = require("../controllers/item");
 
 const { approveItem, rejectItem } = require("../controllers/item/adminItem");
@@ -24,6 +25,7 @@ router.post("/search", searchItems);
 router.post("/", authentication, createItem);
 router.put("/:id", authentication, updateItem);
 router.delete("/:id", authentication, deleteItem);
+router.post("/generate", authentication, generateItem);
 
 router.put("/admin/approve/:id", authentication, isAdmin, approveItem);
 router.put("/admin/reject/:id", authentication, isAdmin, rejectItem);
