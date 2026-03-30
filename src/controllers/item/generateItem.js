@@ -6,12 +6,12 @@ const openai = new OpenAI({
 
 async function generateItem(req, res) {
   try {
-    const { itemname, image } = req.body; // make sure this matches your POST body
+    const { itemname, image } = req.body; 
     if (!itemname) return res.status(400).json({ error: "Item name is required" });
 
-    const prompt = `Create a short, catchy item description for this item: ${itemname}. ${
+    const prompt = `Create a short description of this item for a person who lost it and wants to give others information about it: ${itemname}. ${
       image ? `Here is the image URL for reference: ${image}` : ""
-    } Keep it under 20 words.`;
+    } Keep it under 60 words.`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
